@@ -5,20 +5,7 @@ description = "Hybrid (dense + BM25) search over the ISARIC ARC reference catalo
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [
-    { name = "Catalina" },
-]
-keywords = ["isaric", "arc", "redcap", "clinical-research", "hybrid-search", "nlp"]
-classifiers = [
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Science/Research",
-    "Intended Audience :: Healthcare Industry",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Scientific/Engineering :: Medical Science Apps.",
-    "Topic :: Text Processing :: Linguistic",
-]
+
 dependencies = [
     "pandas>=2.0",
     "requests>=2.31",
@@ -30,12 +17,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["ruff>=0.6", "mypy>=1.10", "pytest>=8.0"]
-
-[project.urls]
-Homepage = "https://github.com/your-org/arc-hybrid-search"
-Repository = "https://github.com/your-org/arc-hybrid-search"
-Issues = "https://github.com/your-org/arc-hybrid-search/issues"
-Changelog = "https://github.com/your-org/arc-hybrid-search/blob/main/CHANGELOG.md"
 
 [build-system]
 requires = ["hatchling"]

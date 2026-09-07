@@ -1,5 +1,4 @@
 """Shared configuration and default paths for `arc_hybrid_search`."""
-
 from pathlib import Path
 
 ARC_REPO = "ISARICResearch/ARC"
@@ -22,4 +21,4 @@ def catalog_dir(data_dir: Path | str, catalog: str) -> Path:
 
 def lists_dir(data_dir: Path | str) -> Path:
     """Return the directory where the downloaded ARC_Lists CSVs are stored."""
-    return Path(data_dir) / "ARC_Lists"
+    return Path(data_dir) / "Lists"

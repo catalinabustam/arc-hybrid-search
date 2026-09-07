@@ -4,7 +4,6 @@ Both are fetched fresh every time `download_arc_catalog` / `download_arc_lists`
 run — there's no caching here, since the whole point of `build_index()` is to
 pick up the latest published ARC catalog on demand.
 """
-
 import io
 import os
 from pathlib import Path
@@ -40,8 +39,8 @@ def download_arc_lists(
     """Recursively download every CSV under `ARC_Lists/` in the ARC repo.
 
     Uses the Git Trees API (`recursive=1`) to enumerate the whole repo tree in
-    one call, then pulls each `ARC_Lists/...csv` file via the raw content CDN.
-    The local subfolder structure under `dest_dir` mirrors `ARC_Lists/` in the
+    one call, then pulls each `Lists/...csv` file via the raw content CDN.
+    The local subfolder structure under `dest_dir` mirrors `Lists/` in the
     repo, which is what `expand.create_expanded_arc_dataframe` expects.
 
     Parameters
@@ -61,16 +60,16 @@ def download_arc_lists(
         entry["path"]
         for entry in tree
         if entry.get("type") == "blob"
-        and entry["path"].startswith("ARC_Lists/")
+        and entry["path"].startswith("Lists/")
         and entry["path"].endswith(".csv")
     ]
     if not csv_paths:
-        raise RuntimeError("No CSV files found under ARC_Lists/ in the ARC repo.")
+        raise RuntimeError("No CSV files found under Lists/ in the ARC repo.")
 
     raw_base = f"https://raw.githubusercontent.com/{repo}/{branch}/"
     for path in csv_paths:
         file_response = requests.get(raw_base + path, timeout=(3.05, 10))
         file_response.raise_for_status()
-        local_path = dest_dir / Path(path).relative_to("ARC_Lists")
+        local_path = dest_dir / Path(path).relative_to("Lists")
         local_path.parent.mkdir(parents=True, exist_ok=True)
         local_path.write_bytes(file_response.content)

@@ -39,7 +39,7 @@ class HybridSearchIndex:
             list/option-expanded version (matches individual list items and
             answer options directly).
         top_k : maximum number of results to return.
-        metadata_filter : e.g. `{"Form": ["Demographics"]}` — columns are
+        metadata_filter : e.g. `{"section": ["Demographics"]}` — columns are
             AND-combined, values within a column are OR-combined. `None`
             (the default) searches the whole catalog.
 
@@ -84,17 +84,16 @@ class HybridSearchIndex:
             if allowed_doc_ids is not None and doc_id not in allowed_doc_ids:
                 continue
             row = df.iloc[row_index]
-            output.append(
-                {
-                    "row_index": row_index,
-                    "question": row.get("Question", ""),
-                    "definition": row.get("Definition", ""),
-                    "section": row.get("Section", ""),
-                    "form": row.get("Form", ""),
-                    "variable": row.get("Variable", ""),
-                    "score": scores["normalized_score"],
-                }
-            )
+            output.append({
+                "row_index": row_index,
+                "question": row.get("Question", ""),
+                "definition": row.get("Definition", ""),
+                "section": row.get("Section", ""),
+                "form": row.get("Form", ""),
+                "variable": row.get("Variable", ""),
+                "type": row.get("Type", ""),
+                "score": scores["normalized_score"],
+            })
             if len(output) >= top_k:
                 break
         return output
@@ -109,6 +108,7 @@ class HybridSearchIndex:
             raise RuntimeError(f"No '{catalog}' index found at {cat_dir}. Run build_index() first.")
 
         df = pd.read_csv(csv_path, dtype=str).fillna("")
+        documents = build_documents(df)
         ids = build_ids(df)
         questions_coll, ques_def_coll = load_collections(cat_dir / "chroma", self._model_name)
         bm25_retriever, stemmer = load_bm25_index(cat_dir / "bm25_index")

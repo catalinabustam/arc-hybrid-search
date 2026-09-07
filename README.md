@@ -70,7 +70,7 @@ This downloads the latest `ARC.csv` and `ARC_Lists/`, then writes:
 
 ```
 arc_data/
-├── ARC_Lists/
+├── Lists/
 ├── raw/
 │   ├── arc_raw.csv
 │   ├── chroma/
@@ -94,7 +94,7 @@ results = index.retrieve(
     query="What is the patient's age at admission?",
     catalog="expanded",  # or "raw"
     top_k=5,
-    metadata_filter={"Form": ["Demographics"]},  # optional
+    metadata_filter={"section": ["Demographics"]},  # optional
 )
 
 for r in results:
@@ -105,18 +105,18 @@ Each result is a dict:
 
 ```python
 {
-    "row_index": 12,
-    "question": "What is the patient's age at admission?",
-    "definition": "Age in completed years at time of admission",
-    "section": "Demographics",
-    "form": "Demographics",
-    "variable": "demog_age",
-    "score": 0.87,
+    {'row_index': 94,
+    'question': 'Age',
+    'definition': "This refers to the patient's age.",
+    'section': 'DEMOGRAPHICS',
+    'form': 'presentation',
+    'variable': 'demog_age',
+    'score': 1.0},
 }
 ```
 
 `metadata_filter` columns are AND-combined; values within a column are
-OR-combined (e.g. `{"Form": ["Demographics"], "Section": ["Vitals"]}`).
+OR-combined (e.g. `{"section": ["demographics"], "form": ["presentation"]}`).
 
 ### Available filter columns
 
@@ -140,14 +140,11 @@ since the dense/BM25 search itself still runs unfiltered first):**
 | `Type`                                     | `"radio"`, `"text"`, `"user_list"`           |
 | `Body System`                              | `"Respiratory"`, `"Cardiovascular"`          |
 | `Research Category`                        | `"Core"`, `"Optional"`                       |
-| `Identifier`                                | `"y"`                                        |
 | `preset_ARChetype Disease CRF_Covid`       | preset flag columns, one per ARC preset      |
-| `preset_ARChetype Syndromic CRF_ARI`       | (see full list in `ARC.csv`)                 |
-| `preset_Score_mSOFA`, `preset_Populations_Paediatric`, etc. | |
 
 ```python
 # Fast: Form/Section are Chroma-indexed
-results = index.retrieve("cough duration", metadata_filter={"Form": ["Signs and Symptoms"]})
+results = index.retrieve("cough duration", metadata_filter={"form": ["daily"]})
 
 # Works, but post-filtered: restrict to a specific ARC preset
 results = index.retrieve(
@@ -156,10 +153,6 @@ results = index.retrieve(
 )
 ```
 
-If you find yourself filtering on a non-indexed column often, it's worth
-adding it to `vector_store.METADATA_COLUMNS` so Chroma can filter on it
-directly — just remember to run `build_index()` again afterwards so the
-collections get rebuilt with that column in their metadata.
 
 `HybridSearchIndex` loads each catalog's Chroma collections and BM25 index
 lazily, the first time you request it — creating one instance and calling
@@ -177,17 +170,3 @@ there's no need to build a new instance per call.
   be reused by any project that needs "find the closest ARC variable(s) to
   this question."
 
-## Development
-
-```bash
-pip install -e ".[dev]"  # if you add a [project.optional-dependencies] dev group
-ruff check .
-ruff format .
-mypy src/
-pytest tests/
-```
-
-`tests/test_smoke.py` only covers the pure-function pieces (no network, no
-embedding model download). Exercising `build_index()` + `retrieve()`
-end-to-end requires network access and is meant to be run manually or in a
-CI job with network enabled.
