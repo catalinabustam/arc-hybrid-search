@@ -16,7 +16,17 @@ Nothing is downloaded or built on import — only when you call `build_index()`.
 
 ## Installation
 
-From this folder:
+**If you're a collaborator installing this from the shared Git repo:**
+
+```bash
+pip install git+https://github.com/your-org/arc-hybrid-search.git@v0.1.0
+```
+
+(Replace `your-org` with the actual GitHub org/user this gets pushed to, and
+bump `@v0.1.0` to whichever tag you want — omit the `@...` entirely to track
+the latest commit on `main` instead of a pinned release.)
+
+**If you're working on the package itself, from a local clone:**
 
 ```bash
 pip install -e .
