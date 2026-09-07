@@ -94,7 +94,7 @@ results = index.retrieve(
     query="What is the patient's age at admission?",
     catalog="expanded",  # or "raw"
     top_k=5,
-    metadata_filter={"section": ["Demographics"]},  # optional
+    metadata_filter={"Section": ["DEMOGRAPHICS"]},  # optional
 )
 
 for r in results:
