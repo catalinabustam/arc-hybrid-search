@@ -19,7 +19,7 @@ Nothing is downloaded or built on import — only when you call `build_index()`.
 **If you're a collaborator installing this from the shared Git repo:**
 
 ```bash
-pip install git+https://github.com/your-org/arc-hybrid-search.git@v0.1.0
+pip install git+https://github.com/catalinabustam/arc-hybrid-search_cb.git@v0.1.0
 ```
 
 (Replace `your-org` with the actual GitHub org/user this gets pushed to, and
