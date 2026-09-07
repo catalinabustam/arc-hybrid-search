@@ -1,4 +1,5 @@
 """Shared configuration and default paths for `arc_hybrid_search`."""
+
 from pathlib import Path
 
 ARC_REPO = "ISARICResearch/ARC"

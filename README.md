@@ -105,13 +105,15 @@ Each result is a dict:
 
 ```python
 {
-    {'row_index': 94,
-    'question': 'Age',
-    'definition': "This refers to the patient's age.",
-    'section': 'DEMOGRAPHICS',
-    'form': 'presentation',
-    'variable': 'demog_age',
-    'score': 1.0},
+    {
+        "row_index": 94,
+        "question": "Age",
+        "definition": "This refers to the patient's age.",
+        "section": "DEMOGRAPHICS",
+        "form": "presentation",
+        "variable": "demog_age",
+        "score": 1.0,
+    },
 }
 ```
 

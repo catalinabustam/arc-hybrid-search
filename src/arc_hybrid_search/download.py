@@ -4,6 +4,7 @@ Both are fetched fresh every time `download_arc_catalog` / `download_arc_lists`
 run — there's no caching here, since the whole point of `build_index()` is to
 pick up the latest published ARC catalog on demand.
 """
+
 import io
 import os
 from pathlib import Path

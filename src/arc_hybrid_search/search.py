@@ -84,16 +84,18 @@ class HybridSearchIndex:
             if allowed_doc_ids is not None and doc_id not in allowed_doc_ids:
                 continue
             row = df.iloc[row_index]
-            output.append({
-                "row_index": row_index,
-                "question": row.get("Question", ""),
-                "definition": row.get("Definition", ""),
-                "section": row.get("Section", ""),
-                "form": row.get("Form", ""),
-                "variable": row.get("Variable", ""),
-                "type": row.get("Type", ""),
-                "score": scores["normalized_score"],
-            })
+            output.append(
+                {
+                    "row_index": row_index,
+                    "question": row.get("Question", ""),
+                    "definition": row.get("Definition", ""),
+                    "section": row.get("Section", ""),
+                    "form": row.get("Form", ""),
+                    "variable": row.get("Variable", ""),
+                    "type": row.get("Type", ""),
+                    "score": scores["normalized_score"],
+                }
+            )
             if len(output) >= top_k:
                 break
         return output
