@@ -146,7 +146,7 @@ since the dense/BM25 search itself still runs unfiltered first):**
 
 ```python
 # Fast: Form/Section are Chroma-indexed
-results = index.retrieve("cough duration", metadata_filter={"form": ["daily"]})
+results = index.retrieve("cough duration", metadata_filter={"Form": ["daily"]})
 
 # Works, but post-filtered: restrict to a specific ARC preset
 results = index.retrieve(
