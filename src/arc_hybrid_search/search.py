@@ -108,7 +108,6 @@ class HybridSearchIndex:
             raise RuntimeError(f"No '{catalog}' index found at {cat_dir}. Run build_index() first.")
 
         df = pd.read_csv(csv_path, dtype=str).fillna("")
-        documents = build_documents(df)
         ids = build_ids(df)
         questions_coll, ques_def_coll = load_collections(cat_dir / "chroma", self._model_name)
         bm25_retriever, stemmer = load_bm25_index(cat_dir / "bm25_index")
