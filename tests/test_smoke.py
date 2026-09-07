@@ -25,7 +25,7 @@ def test_catalog_dir_rejects_unknown_catalog():
 def test_catalog_dir_and_lists_dir(tmp_path):
     assert catalog_dir(tmp_path, "raw") == tmp_path / "raw"
     assert catalog_dir(tmp_path, "expanded") == tmp_path / "expanded"
-    assert lists_dir(tmp_path) == tmp_path / "ARC_Lists"
+    assert lists_dir(tmp_path) == tmp_path / "Lists"
     assert set(CATALOGS) == {"raw", "expanded"}
 
 
