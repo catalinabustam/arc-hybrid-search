@@ -16,28 +16,10 @@ Nothing is downloaded or built on import — only when you call `build_index()`.
 
 ## Installation
 
-**If you're a collaborator installing this from the shared Git repo:**
+**Installing this from the shared Git repo:**
 
 ```bash
-pip install git+https://github.com/catalinabustam/arc-hybrid-search_cb.git@v0.1.0
-```
-
-(Replace `your-org` with the actual GitHub org/user this gets pushed to, and
-bump `@v0.1.0` to whichever tag you want — omit the `@...` entirely to track
-the latest commit on `main` instead of a pinned release.)
-
-**If you're working on the package itself, from a local clone:**
-
-```bash
-pip install -e .
-```
-
-Or build a wheel and install it elsewhere:
-
-```bash
-pip install build
-python -m build
-pip install dist/arc_hybrid_search-0.1.0-py3-none-any.whl
+pip install git+https://github.com/catalinabustam/arc-hybrid-search.git
 ```
 
 Requires Python 3.12+. Building the index needs network access to
@@ -112,13 +94,14 @@ Each result is a dict:
         "section": "DEMOGRAPHICS",
         "form": "presentation",
         "variable": "demog_age",
+        "type": "number",
         "score": 1.0,
     },
 }
 ```
 
 `metadata_filter` columns are AND-combined; values within a column are
-OR-combined (e.g. `{"section": ["demographics"], "form": ["presentation"]}`).
+OR-combined (e.g. `{"Section": ["DEMOGRAPHICS"], "Form": ["presentation"]}`).
 
 ### Available filter columns
 
@@ -129,8 +112,8 @@ key, but they fall into two tiers:
 
 | Column     | Example values                          |
 |------------|------------------------------------------|
-| `Form`     | `"Demographics"`, `"Vitals"`, `"Outcome"` |
-| `Section`  | `"Admission"`, `"Comorbidities"`          |
+| `Form`     | `"presentation"`, `"daily"`, `"outcome"` |
+| `Section`  | `"DEMOGRAPHICS"`, `"VACCINATION"`          |
 | `Question` | exact question text                       |
 
 **Any other ARC column (works, applied after retrieval — less efficient
@@ -163,12 +146,7 @@ there's no need to build a new instance per call.
 
 ## Notes
 
-- The embedding model defaults to `BAAI/bge-large-en-v1.5` (same as the
-  original app); override via `build_index(model_name=...)` and
+- The embedding model defaults to `BAAI/bge-large-en-v1.5`; override via `build_index(model_name=...)` and
   `HybridSearchIndex(model_name=...)` — both sides must agree, since Chroma
   needs the same embedding function to query a collection it built.
-- This package intentionally does **not** include translation, REDCap
-  export, or UI concerns — it's scoped to hybrid retrieval only, so it can
-  be reused by any project that needs "find the closest ARC variable(s) to
-  this question."
 
