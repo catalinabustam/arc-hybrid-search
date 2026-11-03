@@ -7,10 +7,9 @@ and is exercised manually/in CI with network access — see README.md.
 import pandas as pd
 import pytest
 
-from arc_hybrid_search import HybridSearchIndex, build_index
+from arc_hybrid_search import HybridSearchIndex, build_index, index_builder
 from arc_hybrid_search.config import ARC_URL, CATALOGS, catalog_dir, lists_dir
 from arc_hybrid_search.documents import build_documents, build_ids
-from arc_hybrid_search import index_builder
 
 
 def test_public_api_importable():
