@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .config import DEFAULT_DATA_DIR, EMBEDDING_MODEL, catalog_dir, lists_dir
+from .config import ARC_URL, DEFAULT_DATA_DIR, EMBEDDING_MODEL, catalog_dir, lists_dir
 from .documents import build_documents, build_ids
 from .download import download_arc_catalog, download_arc_lists
 from .expand import create_expanded_arc_dataframe
@@ -23,6 +23,7 @@ def build_index(
     data_dir: str | Path = DEFAULT_DATA_DIR,
     model_name: str = EMBEDDING_MODEL,
     github_token: str | None = None,
+    arc_url: str = ARC_URL,
 ) -> None:
     """Download the latest ARC catalog + ARC_Lists and (re)build both catalogs.
 
@@ -38,12 +39,13 @@ def build_index(
     github_token : optional GitHub token (or set the `GITHUB_TOKEN` env var)
         to avoid the 60 req/hour unauthenticated rate limit when listing
         `ARC_Lists/` — see `download.download_arc_lists`.
+    arc_url : URL for the ARC CSV catalog. Defaults to the current ARC URL.
     """
     data_dir = Path(data_dir)
     data_dir.mkdir(parents=True, exist_ok=True)
 
     print("Downloading ARC catalog...")
-    arc_df = download_arc_catalog()
+    arc_df = download_arc_catalog(url=arc_url)
 
     print("Downloading ARC_Lists...")
     lists_path = lists_dir(data_dir)

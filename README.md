@@ -36,6 +36,13 @@ from arc_hybrid_search import build_index
 build_index(data_dir="./arc_data")  # downloads ARC.csv + ARC_Lists, builds both catalogs
 ```
 
+To use a different ARC CSV source, pass `arc_url`; the published ARC URL is
+used by default:
+
+```python
+build_index(data_dir="./arc_data", arc_url="https://example.org/ARC.csv")
+```
+
 GitHub's Trees API (used to enumerate `ARC_Lists/`) is rate-limited to 60
 unauthenticated requests/hour **per IP**, which can be exhausted just from
 other traffic sharing that IP (shared CI runners, corporate NAT, etc.). If
