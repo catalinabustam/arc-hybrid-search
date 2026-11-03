@@ -8,8 +8,9 @@ import pandas as pd
 import pytest
 
 from arc_hybrid_search import HybridSearchIndex, build_index
-from arc_hybrid_search.config import CATALOGS, catalog_dir, lists_dir
+from arc_hybrid_search.config import ARC_URL, CATALOGS, catalog_dir, lists_dir
 from arc_hybrid_search.documents import build_documents, build_ids
+from arc_hybrid_search import index_builder
 
 
 def test_public_api_importable():
@@ -50,3 +51,26 @@ def test_retrieve_before_build_raises(tmp_path):
     index = HybridSearchIndex(data_dir=tmp_path)
     with pytest.raises(RuntimeError, match="Run build_index"):
         index.retrieve("anything")
+
+
+@pytest.mark.parametrize(
+    ("arc_url", "expected_url"),
+    [(None, ARC_URL), ("https://example.test/ARC.csv", "https://example.test/ARC.csv")],
+)
+def test_build_index_arc_url(tmp_path, monkeypatch, arc_url, expected_url):
+    received_urls = []
+    arc_df = pd.DataFrame()
+
+    monkeypatch.setattr(
+        index_builder,
+        "download_arc_catalog",
+        lambda url: received_urls.append(url) or arc_df,
+    )
+    monkeypatch.setattr(index_builder, "download_arc_lists", lambda *args, **kwargs: None)
+    monkeypatch.setattr(index_builder, "create_expanded_arc_dataframe", lambda df, path: df)
+    monkeypatch.setattr(index_builder, "_build_catalog", lambda *args, **kwargs: None)
+
+    kwargs = {} if arc_url is None else {"arc_url": arc_url}
+    build_index(data_dir=tmp_path, **kwargs)
+
+    assert received_urls == [expected_url]
